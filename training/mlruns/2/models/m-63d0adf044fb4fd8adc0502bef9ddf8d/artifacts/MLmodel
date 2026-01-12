@@ -1,0 +1,22 @@
+artifact_path: file:///C:/kafka_project/training/mlruns/2/models/m-63d0adf044fb4fd8adc0502bef9ddf8d/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.10.4
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.7.2
+mlflow_version: 3.8.1
+model_id: m-63d0adf044fb4fd8adc0502bef9ddf8d
+model_size_bytes: 557
+model_uuid: m-63d0adf044fb4fd8adc0502bef9ddf8d
+prompts: null
+run_id: b925c3889ce54eb5b0c439ed5b8bde30
+utc_time_created: '2026-01-12 08:30:04.210276'
