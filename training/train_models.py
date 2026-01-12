@@ -67,8 +67,9 @@ print(f"Rows fetched: {len(df)}")
 import sys
 
 if len(df) < 30:
-    print("⚠️ Not enough data to train models - CI safe exit")
+    print("⚠️ Not enough data to train models – CI safe exit")
     sys.exit(0)
+
 
 
 # =========================
