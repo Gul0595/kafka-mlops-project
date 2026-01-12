@@ -1,37 +1,30 @@
-# ============================================
-# Kafka MLOps – Parallel Model Training Script
-# CI Safe | Beginner Friendly
-# ============================================
-
 import os
 import sys
+import mlflow
 import pandas as pd
 import numpy as np
-import mlflow
-import mlflow.sklearn
-
 from datetime import datetime, timedelta
-
+import mysql.connector
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 
-import mysql.connector
-
-
-# ============================================
-# 1️⃣ MLflow Setup
-# ============================================
-mlflow.set_tracking_uri("sqlite:///training/mlflow.db")
-mlflow.set_experiment("15_min_parallel_model_training")
-
-
-# ============================================
-# 2️⃣ Detect CI Environment
-# ============================================
+# ==============================
+# CI DETECTION
+# ==============================
 IS_CI = os.getenv("CI", "false").lower() == "true"
 
+# ==============================
+# MLFLOW SETUP (CI SAFE)
+# ==============================
+if IS_CI:
+    print("CI environment detected → using local MLflow DB")
+    mlflow.set_tracking_uri("sqlite:///mlflow_ci.db")
+else:
+    mlflow.set_tracking_uri("sqlite:///training/mlflow.db")
+
+mlflow.set_experiment("15_min_parallel_model_training")
 
 # ============================================
 # 3️⃣ MySQL Connection (CI-safe)
