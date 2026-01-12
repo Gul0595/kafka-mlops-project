@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import numpy as np
 import mysql.connector
@@ -20,13 +21,20 @@ mlflow.set_experiment("15_min_parallel_model_training")
 # =========================
 # 2️⃣ MYSQL CONNECTION
 # =========================
-db = mysql.connector.connect(
-    host="127.0.0.1",
-    user="root",
-    password="",
-    database="kafka_db",
-    port=3307
-)
+IS_CI = os.getenv("CI", "false").lower() == "true"
+
+def get_mysql_connection():
+    if IS_CI:
+        print("CI environment detected → skipping MySQL connection")
+        return None
+
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="",
+        database="kafka_db",
+        port=3307
+    )
 
 # =========================
 # 3️⃣ LOAD LAST 15 MIN DATA
@@ -40,13 +48,25 @@ FROM sales
 WHERE event_time BETWEEN '{start_time}' AND '{end_time}'
 """
 
-df = pd.read_sql(query, db)
+conn = get_mysql_connection()
+
+if conn is None:
+    print("Using dummy data for CI run")
+    df = pd.DataFrame({
+        "price": [1000, 2000, 3000, 4000, 5000, 6000],
+        "quantity": [1, 2, 1, 3, 2, 4],
+        "sales": [1000, 4000, 3000, 9000, 10000, 24000]
+    })
+else:
+    df = pd.read_sql(query, conn)
+
 
 print(f"Rows fetched: {len(df)}")
 
 if len(df) < 30:
     print("❌ Not enough data to train models")
     exit()
+
 
 # =========================
 # 4️⃣ FEATURES & TARGET
