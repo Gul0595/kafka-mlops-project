@@ -64,9 +64,8 @@ else:
 print(f"Rows fetched: {len(df)}")
 
 if len(df) < 30:
-    print("❌ Not enough data to train models")
-    exit()
-
+    print("⚠️ Not enough data – skipping training gracefully")
+    exit(0)
 
 # =========================
 # 4️⃣ FEATURES & TARGET
