@@ -62,10 +62,12 @@ else:
 
 
 print(f"Rows fetched: {len(df)}")
+MIN_ROWS = 30 if not IS_CI else 5
 
-if len(df) < 30:
-    print("⚠️ Not enough data – skipping training gracefully")
+if len(df) < MIN_ROWS:
+    print("⚠️ Not enough data – skipping training")
     exit(0)
+
 
 # =========================
 # 4️⃣ FEATURES & TARGET
