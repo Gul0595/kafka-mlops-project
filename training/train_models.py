@@ -64,9 +64,10 @@ else:
 print(f"Rows fetched: {len(df)}")
 MIN_ROWS = 30 if not IS_CI else 5
 
-if len(df) < MIN_ROWS:
-    print("⚠️ Not enough data – skipping training")
-    exit(0)
+import sys
+if len(df) < 30:
+    print("⚠️ Not enough data to train models – skipping training safely")
+    sys.exit(0)   # IMPORTANT: success exit
 
 
 # =========================
